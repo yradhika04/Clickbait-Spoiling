@@ -6,6 +6,12 @@ from sklearn.datasets import make_classification
 
 class DoGridSearch():
     def __init__(self, parameters, linear=True) -> None:
+        """
+        Class to perform GridSearch for an SVM classifier. 
+
+        paramters: dict. Dictionary of parameters with parameter name as keys and list of parameter values as values.
+        linear: bool. Set to false if non-linear SVM is needed. Default: True. 
+        """
         
         if linear:
             self.svm = LinearSVC()
@@ -18,6 +24,12 @@ class DoGridSearch():
         self.clf = GridSearchCV(self.svm, parameters, cv=10)
     
     def get_best_params(self, X, y):
+        """
+        Method to fit classifier with different parameters. Returns information on best parameters.
+
+        X: Dataset.
+        y: gold labels of X.
+        """
 
         self.clf.fit(X, y)
 
@@ -26,6 +38,7 @@ class DoGridSearch():
         best_param_idx = self.clf.best_index_
         best_mean_testscore = self.clf.cv_results_["mean_test_score"][best_param_idx]
 
+        # store full results in dataframe
         results = self.clf.cv_results_
         results_df = pd.DataFrame(results)
 
@@ -34,6 +47,7 @@ class DoGridSearch():
 
 if __name__ == "__main__":
 
+    # parameters to check for linear and non-linear SVM 
     lin_svm_params = {'loss': ['hinge', 'squared_hinge'], 'penalty': ['l1', 'l2'],
                    'dual': [True, False], 
                    'C': [2 ** -15, 2 ** -13, 2 ** -11, 2 ** -9, 2 ** -7, 2 ** -5, 2 ** -3, 2 ** -1, 2 ** 0,
@@ -51,7 +65,7 @@ if __name__ == "__main__":
 
     #######################################
 
-    # linear svm
+    # LINEAR SVM
     gs = DoGridSearch(lin_svm_params)
     lin_param_dict, lin_best_score, lin_param_idx, lin_results_df = gs.get_best_params(X,y)
 
@@ -61,9 +75,10 @@ if __name__ == "__main__":
     print("Best models' index in dataframe:", lin_param_idx)
     print()
 
+    # store full results table as csv
     lin_results_df.to_csv("LinSVM_param_results.csv")
 
-    # non-linear svm
+    # NON-LINEAR SVM
     gs_nonlin = DoGridSearch(nonlin_svm_params, linear=False)
     nonlin_param_dict, nonlin_best_score, nonlin_param_idx, nonlin_results_df = gs_nonlin.get_best_params(X,y)
 
@@ -72,6 +87,7 @@ if __name__ == "__main__":
     print("Best mean test score:", nonlin_best_score)
     print("Best models' index in dataframe:", nonlin_param_idx)
 
+    # store full results table as csv
     nonlin_results_df.to_csv("NonLinSVM_param_results.csv")
 
 
