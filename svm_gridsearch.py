@@ -59,7 +59,9 @@ if __name__ == "__main__":
 
     ######################################
     # CHANGE DATA HERE #
-    
+    # GridSearch performs 10-fold cross-validation
+    # add training and dev set here, not test set
+
     # just for illustration    
     X, y = make_classification(n_features=4, random_state=0, n_classes=3, n_informative=3, n_redundant=1)
 
