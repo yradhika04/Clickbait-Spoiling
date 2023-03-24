@@ -44,7 +44,7 @@ class DoGridSearch():
 
         return best_param_dict, best_mean_testscore, best_param_idx, results_df
     
-
+"""
 if __name__ == "__main__":
 
     # parameters to check for linear and non-linear SVM 
@@ -60,7 +60,7 @@ if __name__ == "__main__":
     ######################################
     # CHANGE DATA HERE #
     # GridSearch performs 10-fold cross-validation
-    # add training and dev set here, not test set
+    # add training set here
 
     # just for illustration    
     X, y = make_classification(n_features=4, random_state=0, n_classes=3, n_informative=3, n_redundant=1)
@@ -93,4 +93,4 @@ if __name__ == "__main__":
     nonlin_results_df.to_csv("NonLinSVM_param_results.csv")
 
 
-
+"""
