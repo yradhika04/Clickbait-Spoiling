@@ -43,33 +43,33 @@ def main():
         help='For checking, delete before submission',
         action='store_true'
     )
-    data_prepared = True
+    data_prepared = False
     if data_prepared:
-        with open('./Data_Arrays/X_train.npy', 'wb') as f1:
+        with open('./Data_Arrays/X_train.npy', 'rb') as f1:
             X_train = np.load(f1)
 
-        with open('./Data_Arrays/y_train.npy', 'wb') as f2:
+        with open('./Data_Arrays/y_train.npy', 'rb') as f2:
             y_train = np.load(f2)
 
-        with open('./Data_Arrays/X_validation.npy', 'wb') as f3:
+        with open('./Data_Arrays/X_validation.npy', 'rb') as f3:
             X_validation = np.load(f3)
 
-        with open('./Data_Arrays/y_validation.npy', 'wb') as f4:
+        with open('./Data_Arrays/y_validation.npy', 'rb') as f4:
             y_validation = np.load(f4)
 
-        with open('./Data_Arrays/X_test.npy', 'wb') as f5:
+        with open('./Data_Arrays/X_test.npy', 'rb') as f5:
             X_test = np.load(f5)
 
-        with open('./Data_Arrays/y_test.npy', 'wb') as f6:
+        with open('./Data_Arrays/y_test.npy', 'rb') as f6:
             y_test = np.load(f6)
 
-        with open('./Data_Arrays/y_test_phrase.npy', 'wb') as f7:
+        with open('./Data_Arrays/y_test_phrase.npy', 'rb') as f7:
             y_test_phrase = np.load(f7)
 
-        with open('./Data_Arrays/y_test_passage.npy', 'wb') as f8:
+        with open('./Data_Arrays/y_test_passage.npy', 'rb') as f8:
             y_test_passage = np.load(f8)
         
-        with open('./Data_Arrays/y_test_multi.npy', 'wb') as f9:
+        with open('./Data_Arrays/y_test_multi.npy', 'rb') as f9:
             y_test_multi = np.load(f9)
 
     else:
