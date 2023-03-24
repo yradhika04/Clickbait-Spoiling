@@ -79,13 +79,13 @@ def main():
         X_train = divide_x(data)
         y_train = divide_y(data)
 
-        with open('validation_data.jsonl', 'r') as validation_data_file:
+        with open('./Data/validation_data.jsonl', 'r') as validation_data_file:
             data = list(validation_data_file)
 
         X_validation = divide_x(data)
         y_validation = divide_y(data)
 
-        with open('test_data.jsonl', 'r') as test_data_file:
+        with open('./Data/test_data.jsonl', 'r') as test_data_file:
             data = list(test_data_file)
 
         X_test = divide_x(data)
