@@ -1,0 +1,10 @@
+X_train: (2400, 56)
+y_train: (2400,)
+X_validation: (800, 56)
+y_validation: (800,)
+X_test: (800, 56)
+y_test: (800,)
+y_test_phrase: (800,)
+y_test_passage: (800,)
+y_test_multi: (800,)
+
