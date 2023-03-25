@@ -10,18 +10,24 @@ def creata_data_arrays():
     The final datasets are stored as csv files in Data_Arrays folder.
     main.py reads from these csv files.
     """
-    print("train data")
+    print("train data ENTE")
     with open('./Data/training_data.jsonl', 'r') as training_data_file:
         data = list(training_data_file)
 
     X_train = divide_x(data)
     y_train = divide_y(data)
+    y_train_phrase = divide_y_one_class(data, ['phrase'])
+    y_train_passage = divide_y_one_class(data, ['passage'])
+    y_train_multi = divide_y_one_class(data, ['multi'])
     print("val data")
     with open('./Data/validation_data.jsonl', 'r') as validation_data_file:
         data = list(validation_data_file)
 
     X_validation = divide_x(data)
     y_validation = divide_y(data)
+    y_validation_phrase = divide_y_one_class(data, ['phrase'])
+    y_validation_passage = divide_y_one_class(data, ['passage'])
+    y_validation_multi = divide_y_one_class(data, ['multi'])
 
     print("test data")
     with open('./Data/test_data.jsonl', 'r') as test_data_file:
@@ -35,8 +41,14 @@ def creata_data_arrays():
 
     print("X_train:", X_train.shape)
     print("y_train:", y_train.shape)
+    print("y_train_phrase:", y_train_phrase.shape)
+    print("y_train_passage:", y_train_passage.shape)
+    print("y_train_multi:", y_train_multi.shape)
     print("X_validation:", X_validation.shape)
     print("y_validation:", y_validation.shape)
+    print("y_validation_phrase:", y_validation_phrase.shape)
+    print("y_validation_passage:", y_validation_passage.shape)
+    print("y_validation_multi:", y_validation_multi.shape)
     print("X_test:", X_test.shape)
     print("y_test:", y_test.shape)
     print("y_test_phrase:", y_test_phrase.shape)
@@ -50,11 +62,29 @@ def creata_data_arrays():
     df_y_train = pd.DataFrame(y_train)
     df_y_train.to_csv("./Data_Arrays/y_train.csv", index=False)
 
+    df_y_train_phrase = pd.DataFrame(y_train_phrase)
+    df_y_train_phrase.to_csv("./Data_Arrays/y_train_phrase.csv", index=False)
+
+    df_y_train_passage = pd.DataFrame(y_train_passage)
+    df_y_train_passage.to_csv("./Data_Arrays/y_train_passage.csv", index=False)
+
+    df_y_train_multi = pd.DataFrame(y_train_multi)
+    df_y_train_multi.to_csv("./Data_Arrays/y_train_multi.csv", index=False)
+
     df_X_validation = pd.DataFrame(X_validation)
     df_X_validation.to_csv("./Data_Arrays/X_validation.csv", index=False)
 
     df_y_validation= pd.DataFrame(y_validation)
     df_y_validation.to_csv("./Data_Arrays/y_validation.csv", index=False)
+
+    df_y_validation_phrase = pd.DataFrame(y_validation_phrase)
+    df_y_validation_phrase.to_csv("./Data_Arrays/y_validation_phrase.csv", index=False)
+
+    df_y_validation_passage = pd.DataFrame(y_validation_passage)
+    df_y_validation_passage.to_csv("./Data_Arrays/y_validation_passage.csv", index=False)
+
+    df_y_validation_multi = pd.DataFrame(y_validation_multi)
+    df_y_validation_multi.to_csv("./Data_Arrays/y_validation_multi.csv", index=False)
 
     df_X_test = pd.DataFrame(X_test)
     df_X_test.to_csv("./Data_Arrays/X_test.csv", index=False)

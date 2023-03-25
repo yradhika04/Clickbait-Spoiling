@@ -5,7 +5,6 @@ import pandas as pd
 from sklearn.feature_selection import SelectKBest, chi2
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 import matplotlib.pyplot as plt
-import pdb
 
 from divide_data import divide_x, divide_y, divide_y_one_class
 from logistic_regression import LogReg
@@ -61,8 +60,14 @@ def main():
 
         X_train = pd.read_csv("./Data_Arrays/X_train.csv").to_numpy()
         y_train = np.ravel(pd.read_csv("./Data_Arrays/y_train.csv"))
+        y_train_phrase = np.ravel(pd.read_csv("./Data_Arrays/y_train_phrase.csv"))
+        y_train_passage = np.ravel(pd.read_csv("./Data_Arrays/y_train_passage.csv"))
+        y_train_multi = np.ravel(pd.read_csv("./Data_Arrays/y_train_multi.csv"))
         X_validation = pd.read_csv("./Data_Arrays/X_validation.csv").to_numpy()
         y_validation = np.ravel(pd.read_csv("./Data_Arrays/y_validation.csv"))
+        y_validation_phrase = np.ravel(pd.read_csv("./Data_Arrays/y_validation_phrase.csv"))
+        y_validation_passage = np.ravel(pd.read_csv("./Data_Arrays/y_validation_passage.csv"))
+        y_validation_multi = np.ravel(pd.read_csv("./Data_Arrays/y_validation_multi.csv"))
         X_test = pd.read_csv("./Data_Arrays/X_test.csv").to_numpy()
         y_test = np.ravel(pd.read_csv("./Data_Arrays/y_test.csv"))
         y_test_phrase = np.ravel(pd.read_csv("./Data_Arrays/y_test_phrase.csv"))
@@ -77,12 +82,18 @@ def main():
 
         X_train = divide_x(data)
         y_train = divide_y(data)
+        y_train_phrase = divide_y_one_class(data, ['phrase'])
+        y_train_passage = divide_y_one_class(data, ['passage'])
+        y_train_multi = divide_y_one_class(data, ['multi'])
 
         with open('./Data/validation_data.jsonl', 'r') as validation_data_file:
             data = list(validation_data_file)
 
         X_validation = divide_x(data)
         y_validation = divide_y(data)
+        y_validation_phrase = divide_y_one_class(data, ['phrase'])
+        y_validation_passage = divide_y_one_class(data, ['passage'])
+        y_validation_multi = divide_y_one_class(data, ['multi'])
 
         with open('./Data/test_data.jsonl', 'r') as test_data_file:
             data = list(test_data_file)
