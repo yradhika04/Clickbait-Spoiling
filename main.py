@@ -1,7 +1,11 @@
 
 import argparse
 import numpy as np
+import pandas as pd
 from sklearn.feature_selection import SelectKBest, chi2
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
+import matplotlib.pyplot as plt
+import pdb
 
 from divide_data import divide_x, divide_y, divide_y_one_class
 from logistic_regression import LogReg
@@ -43,34 +47,17 @@ def main():
         help='For checking, delete before submission',
         action='store_true'
     )
-    data_prepared = False
+    data_prepared = True
     if data_prepared:
-        with open('./Data_Arrays/X_train.npy', 'rb') as f1:
-            X_train = np.load(f1)
-
-        with open('./Data_Arrays/y_train.npy', 'rb') as f2:
-            y_train = np.load(f2)
-
-        with open('./Data_Arrays/X_validation.npy', 'rb') as f3:
-            X_validation = np.load(f3)
-
-        with open('./Data_Arrays/y_validation.npy', 'rb') as f4:
-            y_validation = np.load(f4)
-
-        with open('./Data_Arrays/X_test.npy', 'rb') as f5:
-            X_test = np.load(f5)
-
-        with open('./Data_Arrays/y_test.npy', 'rb') as f6:
-            y_test = np.load(f6)
-
-        with open('./Data_Arrays/y_test_phrase.npy', 'rb') as f7:
-            y_test_phrase = np.load(f7)
-
-        with open('./Data_Arrays/y_test_passage.npy', 'rb') as f8:
-            y_test_passage = np.load(f8)
-        
-        with open('./Data_Arrays/y_test_multi.npy', 'rb') as f9:
-            y_test_multi = np.load(f9)
+        X_train = pd.read_csv("./Data_Arrays/X_train.csv").to_numpy()
+        y_train = np.ravel(pd.read_csv("./Data_Arrays/y_train.csv"))
+        X_validation = pd.read_csv("./Data_Arrays/X_validation.csv").to_numpy()
+        y_validation = np.ravel(pd.read_csv("./Data_Arrays/y_validation.csv"))
+        X_test = pd.read_csv("./Data_Arrays/X_test.csv").to_numpy()
+        y_test = np.ravel(pd.read_csv("./Data_Arrays/y_test.csv"))
+        y_test_phrase = np.ravel(pd.read_csv("./Data_Arrays/y_test_phrase.csv"))
+        y_test_passage = np.ravel(pd.read_csv("./Data_Arrays/y_test_passage.csv"))
+        y_test_multi = np.ravel(pd.read_csv("./Data_Arrays/y_test_multi.csv"))
 
     else:
         with open('./Data/training_data.jsonl', 'r') as training_data_file:
@@ -157,6 +144,10 @@ def main():
 
         # HYPERPARAMETERS
         # do hyperparameter tuning as 10-fold cross-validation on training data
+        print("-----------------------------------------------------------------")
+        print("Hyperparameter tuning on 10-fold cross-validation")
+        print("Warning: Some combinations of hyperparameters will raise errors or not converge.")
+        print()
             
         # parameters to check for linear and non-linear SVM 
         """
@@ -201,49 +192,75 @@ def main():
         #nonlin_results_df.to_csv("NonLinSVM_param_results.csv")
 
         # TRAIN I: with all features and best hyperparams
+        print("-----------------------------------------------------------------")
+        print("Training with best hyperparameters")
         # linear SVM
         svm_lin = SVMClassifier(C=lin_param_dict["C"], linear=True, penalty=lin_param_dict["penalty"],
                                  loss=lin_param_dict["loss"], dual=lin_param_dict["dual"])
-        print(svm_lin.get_description() + " on training set with all features.")
         svm_lin.fit_clf(X_train, y_train)
+        svm_lin.get_description()
+        print(" on training set with all features.")
+        print()
 
         # non-linear SVM
         svm_nonlin = SVMClassifier(C=nonlin_param_dict["C"], linear=False, gamma=nonlin_param_dict["gamma"])
-        print(svm_nonlin.get_description() + "on training set with all features.")
         svm_nonlin.fit_clf(X_train,y_train)
+        svm_nonlin.get_description()
+        print(" on training set with all features.")
+        print()
 
         # VALIDATION I: get accuracy on validation set with all features
+        print("-----------------------------------------------------------------")
+        print("Validation using all features")
         y_pred_lin = svm_lin.get_prediction(X_validation) # linear
         y_pred_nonlin = svm_nonlin.get_prediction(X_validation) # non-linear
-        print("\nAccuracy values for Validation data")
+        print("\nAccuracy values for Validation data:")
         print("Linear SVM balanced accuracy score: {:.3f}".format(svm_lin.get_acc(y_validation, y_pred_lin, balanced=True)))
         print("Non-linear SVM balanced accuracy score: {:.3f}".format(svm_nonlin.get_acc(y_validation, y_pred_nonlin, balanced=True)))
 
         # FEATURE SELECTION
         # find best 20 features on training set
+        print("-----------------------------------------------------------------")
+        print("Feature Selection")
         feat_selector = SelectKBest(chi2, k=20)
         X_train_new = feat_selector.fit_transform(X_train, y_train)
         X_validation_new = feat_selector.transform(X_validation)
         X_test_new = feat_selector.transform(X_test)
 
-        assert X_train_new.shape[1] == 20, "feature selection site mismatch"
-        assert X_validation_new.shape[1] == 20, "feature selection site mismatch"
-        assert X_test_new.shape[1] == 20, "feature selection site mismatch"
+        assert X_train_new.shape[1] == 20, "feature selection size mismatch"
+        assert X_validation_new.shape[1] == 20, "feature selection size mismatch"
+        assert X_test_new.shape[1] == 20, "feature selection size mismatch"
 
-        print("20 important features indices:", feat_selector.get_support(indices=True))
+        # save info on most important features
+        features_chosen = feat_selector.get_support(indices=True)
+        feature_chi_scores = feat_selector.scores_
+        print("20 important features indices:", features_chosen)
+        print(feature_chi_scores)
+        # create bar chart of feature importance
+        plt.bar(x=[i for i in range(X_train.shape[1])], height=feature_chi_scores)
+        plt.ylabel('Importance score')
+        plt.xlabel('Feature number')
+        plt.title('Chi square feature importance', size=15)
+        plt.show()
 
         # TRAIN II
         # train models with reduced features on training set
+        print("-----------------------------------------------------------------")
+        print("Training with reducted features.")
         # linear SVM
         svm_lin2 = SVMClassifier(C=lin_param_dict["C"], linear=True, penalty=lin_param_dict["penalty"],
                                  loss=lin_param_dict["loss"], dual=lin_param_dict["dual"])
-        print(svm_lin2.get_description() + " on training set with reduced features.")
         svm_lin2.fit_clf(X_train_new, y_train)
+        svm_lin2.get_description()
+        print(" on training set with reduced features.")
+        print()        
 
         # non-linear SVM
         svm_nonlin2 = SVMClassifier(C=nonlin_param_dict["C"], linear=False, gamma=nonlin_param_dict["gamma"])
-        print(svm_nonlin2.get_description() + "on training set with reduced features.")
-        svm_nonlin.fit_clf(X_train_new,y_train)
+        svm_nonlin2.fit_clf(X_train_new,y_train)
+        svm_nonlin2.get_description()
+        print(" on training set with reduced features.")
+        print()
 
         # VALIDATION II: get accuracy on validation set with reduced features
         y_pred2_lin = svm_lin2.get_prediction(X_validation_new) # linear
@@ -251,13 +268,39 @@ def main():
         print("\nAccuracy values for Validation data, after selecting 20 most important features")
         print("Linear SVM balanced accuracy score: {:.3f}".format(svm_lin2.get_acc(y_validation, y_pred2_lin, balanced=True)))
         print("Non-linear SVM balanced accuracy score: {:.3f}".format(svm_nonlin2.get_acc(y_validation, y_pred2_nonlin, balanced=True)))
+        print()
         
         # TEST: test models with reduced features on test set
+        print("-----------------------------------------------------------------")
         y_pred2_lin_test = svm_lin2.get_prediction(X_test_new) # linear
         y_pred2_nonlin_test = svm_nonlin2.get_prediction(X_test_new) # non-linear
-        print("\nAccuracy values for Test data")
-        print("Linear SVM balanced accuracy score: {:.3f}".format(svm_lin2.get_acc(y_test, y_pred2_lin, balanced=True)))
-        print("Non-linear SVM balanced accuracy score: {:.3f}".format(svm_nonlin2.get_acc(y_test, y_pred2_nonlin, balanced=True)))
+        print("\nAccuracy values on Test data")
+        print("Linear SVM balanced accuracy score: {:.3f}".format(svm_lin2.get_acc(y_test, y_pred2_lin_test, balanced=True)))
+        print("Non-linear SVM balanced accuracy score: {:.3f}".format(svm_nonlin2.get_acc(y_test, y_pred2_nonlin_test, balanced=True)))
+
+        # confusion matrix. in absolute counts and as percentage.
+        class_labels = ["phrase", "passage", "multi"]
+        # for linear SVM
+        cm_lin_abs = confusion_matrix(y_test, y_pred2_lin_test)
+        disp = ConfusionMatrixDisplay(confusion_matrix=cm_lin_abs, display_labels=class_labels)
+        disp.plot()
+        plt.show()
+
+        cm_lin_pc = confusion_matrix(y_test, y_pred2_lin_test, normalize="true")
+        disp = ConfusionMatrixDisplay(confusion_matrix=cm_lin_pc, display_labels=class_labels)
+        disp.plot()
+        plt.show()
+
+        # for non-linear SVM
+        cm_nonlin_abs = confusion_matrix(y_test, y_pred2_nonlin_test)
+        disp = ConfusionMatrixDisplay(confusion_matrix=cm_nonlin_abs, display_labels=class_labels)
+        disp.plot()
+        plt.show()
+
+        cm_nonlin_pc = confusion_matrix(y_test, y_pred2_nonlin_test, normalize="true")
+        disp = ConfusionMatrixDisplay(confusion_matrix=cm_nonlin_pc, display_labels=class_labels)
+        disp.plot()
+        plt.show()
         
 
     if args.svm_ovr:
