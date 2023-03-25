@@ -43,12 +43,22 @@ def main():
     )
 
     parser.add_argument(
+        '--prep_data', dest='prep_data',
+        help='Set to True, if data should be read from csv in Data_Arrays.',
+        action='store_true'
+    )
+
+    parser.add_argument(
         '--example', dest='random',
         help='For checking, delete before submission',
         action='store_true'
     )
-    data_prepared = True
-    if data_prepared:
+
+    args = parser.parse_args()
+    
+    if args.prep_data:
+        # dataset is already prepared. Read from csv.
+
         X_train = pd.read_csv("./Data_Arrays/X_train.csv").to_numpy()
         y_train = np.ravel(pd.read_csv("./Data_Arrays/y_train.csv"))
         X_validation = pd.read_csv("./Data_Arrays/X_validation.csv").to_numpy()
@@ -60,6 +70,8 @@ def main():
         y_test_multi = np.ravel(pd.read_csv("./Data_Arrays/y_test_multi.csv"))
 
     else:
+        # prepare the dataset
+
         with open('./Data/training_data.jsonl', 'r') as training_data_file:
             data = list(training_data_file)
 
@@ -80,8 +92,6 @@ def main():
         y_test_phrase = divide_y_one_class(data, ['phrase'])
         y_test_passage = divide_y_one_class(data, ['passage'])
         y_test_multi = divide_y_one_class(data, ['multi'])
-
-    args = parser.parse_args()
 
     if args.logreg_multi:
         # Logistic regression model 1
