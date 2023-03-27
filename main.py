@@ -293,7 +293,7 @@ def main():
         # TRAIN II
         # train models with reduced features on training set
         print("-----------------------------------------------------------------")
-        print("Training with reducted features.")
+        print("Training with reduced features.")
         # linear SVM
         svm_lin2 = SVMClassifier(C=lin_param_dict["C"], linear=True, penalty=lin_param_dict["penalty"],
                                  loss=lin_param_dict["loss"], dual=lin_param_dict["dual"])
@@ -468,13 +468,14 @@ def main():
             plt.bar(x=[i for i in range(X_train.shape[1])], height=feature_chi_scores)
             plt.ylabel('Importance score')
             plt.xlabel('Feature number')
-            plt.title('Chi square feature importance', size=15)
+            plot_title = 'Chi square feature importance {} vs rest'.format(label)
+            plt.title(plot_title, size=15)
             plt.show()
 
             # TRAIN II
             # train models with reduced features on training set
             print("-----------------------------------------------------------------")
-            print("Training with reducted features.")
+            print("Training with reduced features.")
             # linear SVM
             svm_lin2 = SVMClassifier(C=lin_param_dict["C"], linear=True, penalty=lin_param_dict["penalty"],
                                     loss=lin_param_dict["loss"], dual=lin_param_dict["dual"])
