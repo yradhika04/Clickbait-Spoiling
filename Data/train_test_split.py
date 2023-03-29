@@ -6,7 +6,7 @@ import pandas as pd
 from pandas import json_normalize
 from sklearn.model_selection import train_test_split
 
-with open('train.jsonl', 'r') as training_data_file:
+with open('./datasets_original/train.jsonl', 'r') as training_data_file:
     data = list(training_data_file)
 
 all_data = []  # will be a list of dictionaries, each dictionary is a post

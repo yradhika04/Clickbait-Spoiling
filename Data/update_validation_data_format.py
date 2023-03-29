@@ -3,7 +3,7 @@
 import json
 from pandas import json_normalize
 
-with open('validation.jsonl', 'r') as validation_data_file:
+with open('./datasets_original/validation.jsonl', 'r') as validation_data_file:
     data = list(validation_data_file)
 
 all_data = []  # will be a list of dictionaries, each dictionary is a post
@@ -18,5 +18,3 @@ data_frame = json_normalize(all_data)
 validation_data = data_frame.to_dict(orient='records')
 with open('validation_data.jsonl', 'w') as validation_data_file:
     json.dump(validation_data, validation_data_file)
-
-
