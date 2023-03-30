@@ -4,15 +4,14 @@ from sklearn.metrics import balanced_accuracy_score, accuracy_score
 
 
 def create_baseline():
+    """
+    A naive baseline that always predicts class "phrase".
+    "phrase" has label 0 in the multiclass setting.
+    """
 
     # load data: validation and test labels.
     y_validation = np.ravel(pd.read_csv("./Data_Arrays/y_validation.csv"))
     y_test = np.ravel(pd.read_csv("./Data_Arrays/y_test.csv"))
-
-    # always predict "phrase" and get the balanced accuracy
-
-    # "phrase" as label 0 in multiclass setting
-
     
     # validation set 
     n_val = y_validation.shape[0] # get length of label array
@@ -20,7 +19,7 @@ def create_baseline():
     acc_val = accuracy_score(y_validation, y_hat_val)
     accb_val = balanced_accuracy_score(y_validation, y_hat_val)
 
-    # test
+    # test set
     n_test = y_test.shape[0]
     y_hat_test = np.zeros(shape=n_test)
     acc_test = accuracy_score(y_test, y_hat_test)
