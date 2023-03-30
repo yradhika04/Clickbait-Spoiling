@@ -4,6 +4,4 @@ numpy
 matplotlib
 seaborn
 spacy
-json
-re
 argparse
