@@ -1,5 +1,6 @@
 
 import argparse
+import sys
 import numpy as np
 import pandas as pd
 from sklearn.feature_selection import SelectKBest, chi2
@@ -66,6 +67,9 @@ def main():
         y_test_phrase = np.ravel(pd.read_csv("./Data_Arrays/y_test_phrase.csv"))
         y_test_passage = np.ravel(pd.read_csv("./Data_Arrays/y_test_passage.csv"))
         y_test_multi = np.ravel(pd.read_csv("./Data_Arrays/y_test_multi.csv"))
+    
+    else:
+        sys.exit("First prepare data by running data_storer.py or used prepared data by adding --prep_data (preferred).")
 
     if args.logreg_multi:
         # Logistic regression model 1
