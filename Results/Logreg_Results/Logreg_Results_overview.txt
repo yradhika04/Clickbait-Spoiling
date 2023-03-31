@@ -1,0 +1,312 @@
+# After running "python3 main.py --prep_data --logreg_multi"
+
+Logistic regression: multiclass
+
+Accuracy value for validation data
+0.4601478123866183
+Confusion Matrix: 
+ [[266  58  11]
+ [216  92  14]
+ [ 73  27  43]]
+Feature no.: 1, Score: 11.077
+Feature no.: 2, Score: 25.327
+Feature no.: 3, Score: 1.341
+Feature no.: 4, Score: 14.623
+Feature no.: 5, Score: 3.733
+Feature no.: 6, Score: 13.145
+Feature no.: 7, Score: 5.513
+Feature no.: 8, Score: 1.781
+Feature no.: 9, Score: 8.887
+Feature no.: 10, Score: 1.341
+Feature no.: 11, Score: 1.397
+Feature no.: 12, Score: 0.213
+Feature no.: 13, Score: 0.112
+Feature no.: 14, Score: 1.470
+Feature no.: 15, Score: 7.128
+Feature no.: 16, Score: 1.397
+Feature no.: 17, Score: 9.352
+Feature no.: 18, Score: nan
+Feature no.: 19, Score: 8.776
+Feature no.: 20, Score: 40.467
+Feature no.: 21, Score: 5.163
+Feature no.: 22, Score: nan
+Feature no.: 23, Score: nan
+Feature no.: 24, Score: 2.136
+Feature no.: 25, Score: nan
+Feature no.: 26, Score: nan
+Feature no.: 27, Score: 2.941
+Feature no.: 28, Score: 0.800
+Feature no.: 29, Score: 9.596
+Feature no.: 30, Score: 2.630
+Feature no.: 31, Score: 3.502
+Feature no.: 32, Score: 1.510
+Feature no.: 33, Score: 9.135
+Feature no.: 34, Score: 2.828
+Feature no.: 35, Score: 1.462
+Feature no.: 36, Score: 4.179
+Feature no.: 37, Score: 2.903
+Feature no.: 38, Score: 0.371
+Feature no.: 39, Score: 4.423
+Feature no.: 40, Score: 3.783
+Feature no.: 41, Score: 3.117
+Feature no.: 42, Score: 3.638
+Feature no.: 43, Score: 9.203
+Feature no.: 44, Score: 5.452
+Feature no.: 45, Score: 138.001
+Feature no.: 46, Score: 0.112
+Feature no.: 47, Score: 47.476
+Feature no.: 48, Score: 14.184
+Feature no.: 49, Score: 4.728
+Feature no.: 50, Score: 3.734
+Feature no.: 51, Score: 4.728
+Feature no.: 52, Score: 10.649
+Feature no.: 53, Score: 0.054
+Feature no.: 54, Score: 2.697
+Feature no.: 55, Score: nan
+Feature no.: 56, Score: 2.941
+
+Accuracy value for validation data after selecting 20 most important features
+0.46554321732777276
+Confusion Matrix: 
+ [[280  44  11]
+ [230  77  15]
+ [ 73  24  46]]
+
+Accuracy value for testing data
+0.4512103108925353
+Confusion Matrix: 
+ [[283  43  16]
+ [227  81  10]
+ [ 80  22  38]]
+
+# After running "python3 main.py --prep_data --logreg_ovr"
+
+Logistic regression: one-vs-rest (3 models)
+
+[phrase] vs [passage, multi]
+
+Accuracy values for validation data
+0.5719146204461563
+Confusion Matrix: 
+ [[425  40]
+ [258  77]]
+Feature no.: 1, Score: 8.824
+Feature no.: 2, Score: 0.647
+Feature no.: 3, Score: 1.341
+Feature no.: 4, Score: 14.620
+Feature no.: 5, Score: 3.044
+Feature no.: 6, Score: 12.219
+Feature no.: 7, Score: 5.415
+Feature no.: 8, Score: 0.391
+Feature no.: 9, Score: 8.824
+Feature no.: 10, Score: 1.341
+Feature no.: 11, Score: 0.692
+Feature no.: 12, Score: 0.158
+Feature no.: 13, Score: 0.068
+Feature no.: 14, Score: 0.192
+Feature no.: 15, Score: 6.152
+Feature no.: 16, Score: 0.692
+Feature no.: 17, Score: 8.113
+Feature no.: 18, Score: nan
+Feature no.: 19, Score: 4.622
+Feature no.: 20, Score: 38.079
+Feature no.: 21, Score: 3.155
+Feature no.: 22, Score: nan
+Feature no.: 23, Score: nan
+Feature no.: 24, Score: 0.011
+Feature no.: 25, Score: nan
+Feature no.: 26, Score: nan
+Feature no.: 27, Score: 0.513
+Feature no.: 28, Score: 0.630
+Feature no.: 29, Score: 8.284
+Feature no.: 30, Score: 0.962
+Feature no.: 31, Score: 1.054
+Feature no.: 32, Score: 0.745
+Feature no.: 33, Score: 5.402
+Feature no.: 34, Score: 0.534
+Feature no.: 35, Score: 1.235
+Feature no.: 36, Score: 3.727
+Feature no.: 37, Score: 2.491
+Feature no.: 38, Score: 0.089
+Feature no.: 39, Score: 1.771
+Feature no.: 40, Score: 1.457
+Feature no.: 41, Score: 2.704
+Feature no.: 42, Score: 2.842
+Feature no.: 43, Score: 2.591
+Feature no.: 44, Score: 0.291
+Feature no.: 45, Score: 24.305
+Feature no.: 46, Score: 0.068
+Feature no.: 47, Score: 6.652
+Feature no.: 48, Score: 2.236
+Feature no.: 49, Score: 0.745
+Feature no.: 50, Score: 0.000
+Feature no.: 51, Score: 0.745
+Feature no.: 52, Score: 0.265
+Feature no.: 53, Score: 0.030
+Feature no.: 54, Score: 2.563
+Feature no.: 55, Score: nan
+Feature no.: 56, Score: 0.513
+
+Accuracy values for validation data after selecting 20 most important features
+0.5679184721553523
+Confusion Matrix: 
+ [[431  34]
+ [265  70]]
+
+Accuracy values for test data
+0.5363901018922853
+Confusion Matrix: 
+ [[415  43]
+ [285  57]]
+
+[passage] vs [phrase, multi]
+
+Accuracy values for validation data
+0.5557252007588555
+Confusion Matrix: 
+ [[414  64]
+ [243  79]]
+Feature no.: 1, Score: 9.954
+Feature no.: 2, Score: 8.825
+Feature no.: 3, Score: 0.662
+Feature no.: 4, Score: 7.427
+Feature no.: 5, Score: 0.403
+Feature no.: 6, Score: 3.136
+Feature no.: 7, Score: 3.450
+Feature no.: 8, Score: 0.160
+Feature no.: 9, Score: 3.644
+Feature no.: 10, Score: 0.662
+Feature no.: 11, Score: 0.000
+Feature no.: 12, Score: 0.198
+Feature no.: 13, Score: 0.111
+Feature no.: 14, Score: 0.246
+Feature no.: 15, Score: 1.080
+Feature no.: 16, Score: 0.000
+Feature no.: 17, Score: 7.801
+Feature no.: 18, Score: nan
+Feature no.: 19, Score: 8.766
+Feature no.: 20, Score: 29.537
+Feature no.: 21, Score: 5.091
+Feature no.: 22, Score: nan
+Feature no.: 23, Score: nan
+Feature no.: 24, Score: 0.928
+Feature no.: 25, Score: nan
+Feature no.: 26, Score: nan
+Feature no.: 27, Score: 0.367
+Feature no.: 28, Score: 0.724
+Feature no.: 29, Score: 8.049
+Feature no.: 30, Score: 2.586
+Feature no.: 31, Score: 3.366
+Feature no.: 32, Score: 1.510
+Feature no.: 33, Score: 0.066
+Feature no.: 34, Score: 2.532
+Feature no.: 35, Score: 0.195
+Feature no.: 36, Score: 3.366
+Feature no.: 37, Score: 0.424
+Feature no.: 38, Score: 0.345
+Feature no.: 39, Score: 4.384
+Feature no.: 40, Score: 0.056
+Feature no.: 41, Score: 2.600
+Feature no.: 42, Score: 3.310
+Feature no.: 43, Score: 8.766
+Feature no.: 44, Score: 3.982
+Feature no.: 45, Score: 17.016
+Feature no.: 46, Score: 0.111
+Feature no.: 47, Score: 7.482
+Feature no.: 48, Score: 1.986
+Feature no.: 49, Score: 0.662
+Feature no.: 50, Score: 1.906
+Feature no.: 51, Score: 0.662
+Feature no.: 52, Score: 3.730
+Feature no.: 53, Score: 0.000
+Feature no.: 54, Score: 1.920
+Feature no.: 55, Score: nan
+Feature no.: 56, Score: 0.367
+
+Accuracy values for validation data after selecting 20 most important features
+0.5598443306738741
+Confusion Matrix: 
+ [[412  66]
+ [239  83]]
+
+Accuracy values for test data
+0.564648085805997
+Confusion Matrix: 
+ [[417  65]
+ [234  84]]
+
+[multi] vs [phrase, passage]
+
+Accuracy values for validation data
+0.6168853977073154
+Confusion Matrix: 
+ [[636  21]
+ [105  38]]
+Feature no.: 1, Score: 0.039
+Feature no.: 2, Score: 23.802
+Feature no.: 3, Score: 0.212
+Feature no.: 4, Score: 2.154
+Feature no.: 5, Score: 2.115
+Feature no.: 6, Score: 5.159
+Feature no.: 7, Score: 0.406
+Feature no.: 8, Score: 1.770
+Feature no.: 9, Score: 1.985
+Feature no.: 10, Score: 0.212
+Feature no.: 11, Score: 1.212
+Feature no.: 12, Score: 0.003
+Feature no.: 13, Score: 0.008
+Feature no.: 14, Score: 1.468
+Feature no.: 15, Score: 3.579
+Feature no.: 16, Score: 1.212
+Feature no.: 17, Score: 0.012
+Feature no.: 18, Score: nan
+Feature no.: 19, Score: 1.034
+Feature no.: 20, Score: 1.065
+Feature no.: 21, Score: 0.354
+Feature no.: 22, Score: nan
+Feature no.: 23, Score: nan
+Feature no.: 24, Score: 1.904
+Feature no.: 25, Score: nan
+Feature no.: 26, Score: nan
+Feature no.: 27, Score: 2.939
+Feature no.: 28, Score: 0.004
+Feature no.: 29, Score: 0.008
+Feature no.: 30, Score: 0.634
+Feature no.: 31, Score: 1.058
+Feature no.: 32, Score: 0.212
+Feature no.: 33, Score: 7.269
+Feature no.: 34, Score: 1.210
+Feature no.: 35, Score: 0.772
+Feature no.: 36, Score: 0.022
+Feature no.: 37, Score: 1.479
+Feature no.: 38, Score: 0.136
+Feature no.: 39, Score: 0.933
+Feature no.: 40, Score: 3.531
+Feature no.: 41, Score: 0.004
+Feature no.: 42, Score: 0.022
+Feature no.: 43, Score: 2.961
+Feature no.: 44, Score: 3.501
+Feature no.: 45, Score: 137.917
+Feature no.: 46, Score: 0.008
+Feature no.: 47, Score: 47.447
+Feature no.: 48, Score: 14.184
+Feature no.: 49, Score: 4.728
+Feature no.: 50, Score: 3.134
+Feature no.: 51, Score: 4.728
+Feature no.: 52, Score: 9.998
+Feature no.: 53, Score: 0.045
+Feature no.: 54, Score: 0.090
+Feature no.: 55, Score: nan
+Feature no.: 56, Score: 2.939
+
+Accuracy values for validation data after selecting 20 most important features
+0.6188598311885982
+Confusion Matrix: 
+ [[634  23]
+ [104  39]]
+
+Accuracy values for test data
+0.598917748917749
+Confusion Matrix: 
+ [[635  25]
+ [107  33]]
