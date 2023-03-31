@@ -10,7 +10,7 @@ def creata_data_arrays():
     The final datasets are stored as csv files in Data_Arrays folder.
     main.py reads from these csv files.
     """
-    print("train data ENTE")
+    print("train data")
     with open('./Data/training_data.jsonl', 'r') as training_data_file:
         data = list(training_data_file)
 
