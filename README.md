@@ -1,92 +1,135 @@
-# SpoilerClassification
+# Clickbait Spoiler Classification - Final Project ANLP
 
+## General Description:
 
+In this repository we present our final project for the course
+"*Advanced Natural Language Processing (ANLP)"* in which we participated
+during the winter semester 2022-2023 at Potsdam University. The
+following students contributed in the development of this project:
+Radhika Yadav, Dorothea MacPhail and Valentina Tretti.
 
-## Getting started
+**Spoiler Type Classification:**
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+For this project we chose task 5: *Clickbait Spoiling*, specifically
+subtask 1: *Spoiler Type Classification*from [*SemEval 2023*](https://semeval.github.io/SemEval2023/tasks.html). The goal of this
+task is to classify a dataset of clickbait posts into
+classes (passage, phrase and multipart) according to the text type
+that would be needed to generate a spoiler (Hagen et al. 2022)<sup>1</sup>.
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+## Repository Structure
 
-## Add your files
+### 1. Code
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+-   **Data:**
 
+    - Original data sets (training and validation) in folder `datasets_original`
+
+    - Includes the final data set splits (training,validation, and testing) in json format: `training_data.json`, `validation_data.json`, `test_data.json`
+
+    - Includes the functions used for the data pre-processing: `train_test_split.py` (splits the original training data set (3,200 posts) into our training set (2,400) and test set (800)) and `update_validation_data_format.py` (used to store and read the validation set in the same json format we have the training and test set)
+
+-  **Data Arrays:** includes all the data arrays created from the
+        final dataset splits (train, validation and test) in the function
+        `creata_data_arrays()` in `data_storer.py`. These arrays are
+        stored as csv files in this folder and are then used by the
+        classifiers. Includes a file `array_shapes.txt` specifying the shapes
+        of all the arrays.
+
+- `baseline.py`: used to create a naïve baseline that always
+predicts the "phrase" class and provides the accuracy and balanced
+accuracy scores of the baseline. 
+
+- `create_patterns.py`: used to check the frequency of a given pattern in a post
+headline of all classes.
+
+- `data_storer.py`: contains the function `creata_data_arrays()` which creates different datasets (arrays) for the classifiers using the manually created features and stores them into csv files. All these csv files are available in `Data_Arrays` folder and are read from `main.py`. In addition, this function prints the shapes of all the created arrays.
+
+- `divide_data.py`: used to create X and Y arrays for training and testing and called in `data_storer.py`. The `divide_x()` function creates the `X_data` array that contains all independent variables for training and testing. Then, `divide_y()` creates the `y_data` array composed of the dependent variables ("phrase", "passage" and "multi"). Finally, `divide_y_one_class()` creates the arrays composed of the dependent variables that need to be predicted ("phrase", "passage" and "multi") specifically for the one-vs-rest settings.
+
+- `feature_encoding.py`: checks if a given POS tag sequence is a subset of the POS tags of an entire sentence and checks if a given feature is in a headline of a clickbait post. Called in `divide_data.py`.
+
+- `logistic_regression.py`: used to train the logistic regression models (for both multi-class and one-vs-rest settings). Includes the functions to predict the labels, determine the top feature selection and calculate balanced accuracy scores. Called in `main.py`.
+
+- `main.py`: contains the main scipt to load the data, train and test the classifiers. Detailed description of flags for running the script in the *Reproduce Results* section of this document.
+
+- `pos_tag_list.txt`: includes the list of all English POS tags according to the SpaCy Library.
+
+- `pos_tagging_spacy.ipynb`: notebook used to extract he POS tags of SpaCy library used for feature engineering.
+
+- `read_data.py`: used to read the data from the datasets to determine possible feature patterns.
+
+- `requirements.txt`: includes the packages used.
+
+- `svm_classifier.py`: includes class used to train two types of SVM models (linear and non-linear) for both multi-class and one-vs-rest settings. Includes the following functions: `get_description()` used to print the description of the type of SVM model being used and the parameters; `clf.fit()` to fit the model; `get_prediction()` to predict the labels; `get_acc()` calculate balanced accuracy scores. Called in `main.py`.
+
+- `svm_gridsearch.py`: used to conduct the hyperparameter tuning of the SVM models and returns the best parameters. Called in `main.py`.
+
+### 2. Results:
+
+- **Logreg_Results:**
+
+    - Includes `Logreg_Results_overview.txt` which contains: accuracy results and feature scores for all settings with all features and only the best 20.
+
+    - `Logreg_Results_plots.zip`: includes all plots for confusion matrix and graphs for best features.
+
+- **SVM Results:**
+
+    - Includes a file `SVM_Results_overview.txt` which contains all results for both linear and non-linear SVM models (for both multi and ovr settings) considering all features and only best 20 and 30 features.
+
+    - Includes `svm_result_plots.zip` which contains to folders: `feature_20` and `feature_30` which have all the confusion matrix plots for accuracy results and the graphs with the chi square feature importance for each setting and model.
+
+## Reproducing Results
+### Get Started
+Install all necessary packages with `requirements.txt`:
 ```
-cd existing_repo
-git remote add origin https://gitup.uni-potsdam.de/anlpclickbaitgroup/spoilerclassification.git
-git branch -M main
-git push -uf origin main
+$ pip install Code/requirements.txt
+```
+In addition, install the SpaCy English language model needed for POS-tagging:
+```
+$ python -m spacy download en_core_web_sm
+```
+(More information on installing SpaCy models [here](https://spacy.io/usage))
+
+### Reproduce the Dataset
+The final datasets with features can be inspected in folder `Code/Data/Data_Arrays`.
+
+The dataset is reproducable with the following steps: 
+1. xreate train-test split
+```
+$ python Code/Data/train_test_split.py
+```
+2. Re-format the validation data
+```
+$ python Code/Data/update_validation_data_format.py
+```
+3. Create final datasets for all settings using the features
+```
+$ python data_storer.py
 ```
 
-## Integrate with your tools
+### Reproduce the Model Results
+All models are trained and tested in `main.py`. Use different flags for running the different models in different settings:
 
-- [ ] [Set up project integrations](https://gitup.uni-potsdam.de/anlpclickbaitgroup/spoilerclassification/-/settings/integrations)
+1. train the logistic regression model in the multi-class setting, validate it with all the features, selecting best 20 features, re-training the model and measuring accuracy with validation and testing updated sets:
+```
+$ python Code/main.py --logreg_multi --prep_data
+```
 
-## Collaborate with your team
+2. train the logistic regression model in the one-vs-rest setting, validate it with all the features, selecting best 20 features, re-training the model and measuring accuracy with validation and testing updated sets.
+```
+$ python Code/main.py --logreg_ovr --prep_data
+```
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Automatically merge when pipeline succeeds](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+3. train the both linear and non-linear svm models in the multi-class setting, validate it with all the features, selecting best 20 features, re-training the model and measuring accuracy with validation and testing updated sets.
+```
+$ python Code/main.py --svm_multi --prep_data
+```
 
-## Test and Deploy
+4. train the both linear and non-linear svm models in the one-vs-rest setting, validate it with all the features, selecting best 20 features, re-training the model and measuring accuracy with validation and testing updated sets.
+```
+$ python Code/main.py --svm_ovr --prep_data
+```
 
-Use the built-in continuous integration in GitLab.
-
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
-
-***
-
-# Editing this README
-
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!).  Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+## References
+<sup>1</sup> Matthias Hagen, Maik Fröbe, Artur Jurk, and Martin Potthast. 2022. *Clickbait spoiling via question answering and passage retrieval.* In Proceedings of the
+60th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers), pages 7025–7036, Dublin, Ireland. Association for Computational Linguistics.
