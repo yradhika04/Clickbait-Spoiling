@@ -82,7 +82,7 @@ headline of all classes.
 ### Get Started
 Install all necessary packages with `requirements.txt`:
 ```
-$ pip install Code/requirements.txt
+$ pip install -r Code/requirements.txt
 ```
 In addition, install the SpaCy English language model needed for POS-tagging:
 ```
@@ -94,7 +94,7 @@ $ python -m spacy download en_core_web_sm
 The final datasets with features can be inspected in folder `Code/Data/Data_Arrays`.
 
 The dataset is reproducable with the following steps: 
-1. xreate train-test split
+1. create train-test split
 ```
 $ python Code/Data/train_test_split.py
 ```
