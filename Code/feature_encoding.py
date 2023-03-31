@@ -1,4 +1,3 @@
-
 import spacy
 import re
 # from spacy.cli import download
@@ -30,7 +29,7 @@ def check_feature(sentence: str):
     :return: list containing one hot encoded representation of the features
     """
 
-    number_of_features = 56  # change acc to the final number of features
+    number_of_features = 56
     array_for_features = [0]*number_of_features
 
     # create a spacy object and then use it for pos tagging of the target sentence/headline
@@ -98,7 +97,7 @@ def check_feature(sentence: str):
         array_for_features[14] = 1
 
     # passage
-    # feature 5 -> 'here's why' occurs more often in passage than in multi
+    # feature 5
     if subset(pos_tags, ['DT', 'RBS', 'JJ', 'NN']):
         array_for_features[15] = 1
 
@@ -239,10 +238,6 @@ def check_feature(sentence: str):
     pattern_exists = re.findall("#[0-9]+", sentence)
     if pattern_exists:
         array_for_features[55] = 1
-
-    # feature 17
-    # feature 18 -> "How to" occurs in passage 18 times, and 16 times in multi
-    # feature 19 -> regex or pos tags?
 
     else:
         pass
