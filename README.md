@@ -1,6 +1,6 @@
 # Clickbait Spoiler Classification - Final Project ANLP
 
-## General Description:
+## General Description
 
 In this repository we present our final project for the course
 "*Advanced Natural Language Processing (ANLP)"* in which we participated
